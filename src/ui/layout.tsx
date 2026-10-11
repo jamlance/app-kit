@@ -206,9 +206,9 @@ export function BarChart({ bars, format, height = 200 }: { bars: Bar[]; format?:
   return (
     <figure style={{ margin: 0 }}>
       <div className="ui-bars" style={{ height }} role="img" aria-label={bars.map((b) => `${b.label}: ${format ? format(b.value) : b.value}`).join(", ")}>
-        {bars.map((b) => (
+        {bars.map((b, i) => (
           <span
-            key={b.label}
+            key={`${b.label}-${i}`}
             className={b.value === 0 ? "z" : undefined}
             style={{ height: `${b.value === 0 ? 2 : Math.max(3, (b.value / max) * 100)}%` }}
             title={`${b.label} · ${format ? format(b.value) : b.value}`}
@@ -216,8 +216,8 @@ export function BarChart({ bars, format, height = 200 }: { bars: Bar[]; format?:
         ))}
       </div>
       <div className="ui-axis">
-        {ticks.map((t) => (
-          <span key={t.label}>{t.label}</span>
+        {ticks.map((t, i) => (
+          <span key={`${t.label}-${i}`}>{t.label}</span>
         ))}
       </div>
     </figure>

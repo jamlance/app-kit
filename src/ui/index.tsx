@@ -4,7 +4,7 @@
 
 export { Tone, IconTone, ButtonKind, ButtonSize, Align, Trend, StepState } from "./types";
 export { ICON_PATHS, type IconName } from "./icons";
-export { formatMoney, formatDate, formatTime, relativeTime, daysUntil, DEFAULT_TIME_ZONE } from "./format";
+export { CURRENCY_PREFIX, formatMoney, formatDate, formatTime, relativeTime, daysUntil, DEFAULT_TIME_ZONE } from "./format";
 
 export {
   cx,

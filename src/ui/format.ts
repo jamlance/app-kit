@@ -3,18 +3,21 @@
 
 export const DEFAULT_TIME_ZONE = "America/Jamaica";
 
+/** Symbols the region reads at a glance; Intl renders several of these as a bare "$". */
+export const CURRENCY_PREFIX: Record<string, string> = { JMD: "J$", USD: "US$", TTD: "TT$", BBD: "Bds$", XCD: "EC$", KYD: "CI$", GYD: "G$", BSD: "B$", BZD: "BZ$", CAD: "CA$" };
+
 /** "J$5,000.00" style. `cents: false` drops the decimals for whole amounts in tiles and lists. */
 export function formatMoney(amount: number, currency: string, opts: { cents?: boolean } = {}): string {
   const cents = opts.cents ?? true;
+  const digits = cents ? 2 : 0;
+  const sign = amount < 0 ? "−" : "";
+  const n = new Intl.NumberFormat("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(Math.abs(amount));
+  const prefix = CURRENCY_PREFIX[currency.toUpperCase()];
+  if (prefix) return `${sign}${prefix}${n}`;
   try {
-    return new Intl.NumberFormat("en-JM", {
-      style: "currency",
-      currency,
-      minimumFractionDigits: cents ? 2 : 0,
-      maximumFractionDigits: cents ? 2 : 0,
-    }).format(amount);
+    return new Intl.NumberFormat("en-US", { style: "currency", currency, minimumFractionDigits: digits, maximumFractionDigits: digits }).format(amount);
   } catch {
-    return `${currency} ${amount.toFixed(cents ? 2 : 0)}`;
+    return `${sign}${currency} ${n}`;
   }
 }
 

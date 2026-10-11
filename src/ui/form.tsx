@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 import { Button, cx, Icon } from "./primitives";
 import { ButtonKind } from "./types";
+import { CURRENCY_PREFIX } from "./format";
 
 export interface FieldProps {
   label: ReactNode;
@@ -91,7 +92,6 @@ export function AffixField({ label, hint, error, prefix, suffix, ...rest }: Affi
   );
 }
 
-const CURRENCY_PREFIX: Record<string, string> = { JMD: "J$", USD: "US$", TTD: "TT$", BBD: "Bds$", XCD: "EC$", KYD: "CI$", GYD: "G$" };
 
 /** Money in the merchant's currency, typed in whole units (the server stores what it needs). */
 export function MoneyField({ currency, ...rest }: Omit<AffixFieldProps, "prefix" | "type" | "inputMode"> & { currency: string }) {
