@@ -68,11 +68,23 @@ In CI (e.g. GitHub Actions), expose a token with read access to **both** private
 | `@inkress/app-kit/server/tokens` | **server** | `openMerchantTokens` (encrypted offline refresh tokens for webhooks/public). |
 | `@inkress/app-kit/server/services` | **server** | `EmailProvider`/`BlobStore`/`NotificationProvider` + AWS defaults. |
 | `@inkress/app-kit/client` | client | `BvProvider`, `useBv`, `useToast`, `useConfirm`, `useEmbedNavigate`, `useStorefront`, `bvFetch`. |
-| `@inkress/app-kit/styles.css` | client | Design tokens + base styles. |
+| `@inkress/app-kit/styles.css` | client | Legacy `bv-*` tokens + base styles (kept for existing apps). |
+| `@inkress/app-kit/ui` | client | The merchant dashboard's components: `AppNav`, `PageHeader`, `StatTiles`, `DataTable` + `StatusTabs`/`SearchBox`/`FilterSelect`/`Pager`/`BulkBar`, `Box`, `AttentionItem`, `SetupChecklist`, `BarChart`, `Timeline`, `KeyValue`, `Hub`, form fields (`TextField`, `MoneyField`, `AffixField`, `SelectField`, `DateField`, `Switch`, `OptionCards`, `Segmented`, `ColorSwatches`, `FileDrop`, `Combobox`, `SaveBar`), `Dialog`/`SidePanel`, `CopyField`, `StatusPill`, `Callout`, `EmptyState`/`ErrorState`/`Skeleton`, and money/date formatters. |
+| `@inkress/app-kit/ui.css` | client | The dashboard's Stone theme (Inter, light + dark) and the `ui-*` component styles. Import once in `root.tsx`. |
 
 **Rule:** anything under `/server` is server-only. Importing it from client code leaks the
 client secret and admin SDK; the RR7 build will fail (`.server` boundary) and a lint rule
 catches it in CI.
+
+## Look and feel
+
+New apps use `@inkress/app-kit/ui` + `ui.css`, not `bv-*`. The rules the components encode:
+
+- The host draws the app's name; the app starts with its own section tabs (`AppNav`).
+- Black primary buttons; Inkress blue only for where you are and what's selected; colour otherwise means status.
+- Icons are line icons coloured by meaning (money green, sales blue, customers violet, store teal, risk rose, settings slate), never on a filled tile.
+- Questions go to the host (`useConfirm`), tasks open in the app (`Dialog`, `SidePanel`), copying goes through the host (`CopyField`, `useClipboard`).
+- List state lives in the URL (`?q=`, `?status=`, cursor params) so loaders do the work and links are shareable.
 
 ## Peer dependencies
 
