@@ -39,6 +39,9 @@ export function createInkressServer(opts: CreateServerOptions): Express {
   const { appKit } = opts;
   const app = express();
   app.disable("x-powered-by");
+  // Apps run behind Traefik/Caddy: trust X-Forwarded-Proto/Host so request URLs are https:// and React Router's
+  // action CSRF check (Origin must match the request origin) passes. Without it every form action is a 400.
+  app.set("trust proxy", true);
 
   // 1) CSP / framing on every response (mandatory for the dashboard iframe).
   const csp = cspHeaders(appKit.config.frameAncestors);
