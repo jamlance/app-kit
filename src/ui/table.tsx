@@ -27,7 +27,7 @@ export function StatusTabs({ tabs, param = "status" }: { tabs: StatusTab[]; para
         next.delete("after");
         next.delete("before");
         return (
-          <Link key={t.value || "all"} to={`?${next}`} aria-current={current === t.value ? "page" : undefined} preventScrollReset>
+          <Link key={`${t.value}|${t.label}`} to={`?${next}`} aria-current={current === t.value ? "page" : undefined} preventScrollReset>
             {t.label}
             {t.count !== undefined ? <span className={t.alert ? "n" : "c"}>{t.count}</span> : null}
           </Link>
