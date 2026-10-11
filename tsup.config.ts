@@ -6,7 +6,8 @@ import { defineConfig } from "tsup";
 //  - server: Node ESM. The secret-touching half (token exchange/refresh,
 //    session store, pg, crypto, admin-sdk, services). Imported by the app's
 //    server.mjs (raw Node) AND by *.server.* route modules (via Vite).
-//  - client: browser ESM. The app-bridge provider/hooks + storefront-sdk.
+//  - client: browser ESM. The app-bridge provider/hooks + storefront-sdk, and the ui/ component layer.
+//    One pass so client/ and ui/ share a chunk (one BvProvider context, not two copies).
 //
 // The isomorphic entry (`index`) is pure types/consts (no node builtins) and
 // is built in the server pass but is safe to import from the browser too.
@@ -29,7 +30,7 @@ export default defineConfig([
     sourcemap: true,
   },
   {
-    entry: { "client/index": "src/client/index.tsx" },
+    entry: { "client/index": "src/client/index.tsx", "ui/index": "src/ui/index.tsx" },
     format: ["esm"],
     platform: "browser",
     target: "es2022",
